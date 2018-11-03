@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="GameStackModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="BangXH">
+    <Key>
+      <PropertyRef Name="TenTK" />
+    </Key>
+    <Property Name="TenTK" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TenNV" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Diem" Type="Double" />
+    <Property Name="ThuHang" Type="Int32" />
+    <NavigationProperty Name="TaiKhoan" Relationship="GameStackModel.FK_TaiKhoan_BangXH" FromRole="BangXH" ToRole="TaiKhoan" />
+  </EntityType>
+  <EntityType Name="BoSuuTapCaNhan">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="TenTK" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Diem" Type="Double" />
+    <NavigationProperty Name="TaiKhoans" Relationship="GameStackModel.FK_TaiKhoan_BoSuuTapCaNhan" FromRole="BoSuuTapCaNhan" ToRole="TaiKhoan" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityContainer Name="GameStackEntities1" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BangXHs" EntityType="Self.BangXH" />
+    <EntitySet Name="BoSuuTapCaNhans" EntityType="Self.BoSuuTapCaNhan" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="TaiKhoans" EntityType="GameStackModel.TaiKhoan" />
+    <AssociationSet Name="FK_TaiKhoan_BangXH" Association="GameStackModel.FK_TaiKhoan_BangXH">
+      <End Role="BangXH" EntitySet="BangXHs" />
+      <End Role="TaiKhoan" EntitySet="TaiKhoans" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TaiKhoan_BoSuuTapCaNhan" Association="GameStackModel.FK_TaiKhoan_BoSuuTapCaNhan">
+      <End Role="BoSuuTapCaNhan" EntitySet="BoSuuTapCaNhans" />
+      <End Role="TaiKhoan" EntitySet="TaiKhoans" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="TaiKhoan">
+    <Key>
+      <PropertyRef Name="TenTK" />
+    </Key>
+    <Property Name="TenTK" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MatKhau" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TenNV" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SDT" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ID" Type="Int32" />
+    <NavigationProperty Name="BangXH" Relationship="GameStackModel.FK_TaiKhoan_BangXH" FromRole="TaiKhoan" ToRole="BangXH" />
+    <NavigationProperty Name="BoSuuTapCaNhan" Relationship="GameStackModel.FK_TaiKhoan_BoSuuTapCaNhan" FromRole="TaiKhoan" ToRole="BoSuuTapCaNhan" />
+  </EntityType>
+  <Association Name="FK_TaiKhoan_BangXH">
+    <End Type="GameStackModel.BangXH" Role="BangXH" Multiplicity="1" />
+    <End Type="GameStackModel.TaiKhoan" Role="TaiKhoan" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="BangXH">
+        <PropertyRef Name="TenTK" />
+      </Principal>
+      <Dependent Role="TaiKhoan">
+        <PropertyRef Name="TenTK" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TaiKhoan_BoSuuTapCaNhan">
+    <End Type="GameStackModel.BoSuuTapCaNhan" Role="BoSuuTapCaNhan" Multiplicity="0..1" />
+    <End Type="GameStackModel.TaiKhoan" Role="TaiKhoan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="BoSuuTapCaNhan">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="TaiKhoan">
+        <PropertyRef Name="ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
